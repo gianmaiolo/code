@@ -28,7 +28,6 @@ by = 0
 shiftangle = 360/npt
 
 #femm.mi_moverotate(bx, by, shiftangle)
-
 #femm.mi_analyze()
 
 #shiftangle = np.arange(360)
@@ -49,3 +48,9 @@ with open('C:\\Users\\gianm\\OneDrive\\Desktop\\Università 📚\\progetto fem\\
         femm.mi_loadsolution()
         FluxLinkage[:, idx] = np.array([femm.mo_getcircuitproperties('phase_1')[2] , femm.mo_getcircuitproperties('phase_2')[2] , femm.mo_getcircuitproperties('phase_3')[2] ])
         writer.writerow([femm.mo_getcircuitproperties('phase_1')[2] , femm.mo_getcircuitproperties('phase_2')[2] , femm.mo_getcircuitproperties('phase_3')[2] ])
+
+plt.figure()
+for ph in np.ones([nE]):
+    plt.plot(shiftangle, FluxLinkage[ph, :])
+    
+    
