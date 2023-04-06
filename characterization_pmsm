@@ -19,6 +19,8 @@ femm.openfemm()
 femm.opendocument('C:\\femm42\\examples\\LM_laboratorio_1.fem')
 #femm.mi_analyze()
 
+nE = 3
+
 npt =25
 bx = 0
 by = 0 
@@ -32,9 +34,11 @@ shiftangle = 360/npt
 #shiftangle = np.arange(360)
 shiftangle = np.ones(npt)*360/npt # np.linspace(0,360,npt)
 
+FluxLinkage = np.zeros([nE, npt])
+
 with open('C:\\Users\\gianm\\OneDrive\\Desktop\\Università 📚\\progetto fem\\femm_flux_linkage.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
-    for alpha in shiftangle:
+    for idx, alpha in enumerate(shiftangle):
         
         femm.mi_selectgroup(2)
         femm.mi_moverotate(bx, by, alpha)
@@ -43,5 +47,5 @@ with open('C:\\Users\\gianm\\OneDrive\\Desktop\\Università 📚\\progetto fem\\
         femm.mi_analyze()
         
         femm.mi_loadsolution()
-        
+        FluxLinkage[:, idx] = np.array([femm.mo_getcircuitproperties('phase_1')[2] , femm.mo_getcircuitproperties('phase_2')[2] , femm.mo_getcircuitproperties('phase_3')[2] ])
         writer.writerow([femm.mo_getcircuitproperties('phase_1')[2] , femm.mo_getcircuitproperties('phase_2')[2] , femm.mo_getcircuitproperties('phase_3')[2] ])
